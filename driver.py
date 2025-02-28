@@ -1,4 +1,5 @@
-import time
+import time 
+import random
 from grid import Grid
 from tile import Tile
 from fwdAstar import repeated_forward_astar
@@ -23,14 +24,21 @@ def load_grid(filename):
     return grid
 
 # Set up test parameters
-grid_filename = "generated_grids/grid_15.txt"  # Change file as needed
+grid_filename = "generated_grids/grid_99.txt"  # Change file as needed
 grid = load_grid(grid_filename)
 
-# Define start and goal positions
-start = grid.get_tile(0, 0)
+# Define random start position
+while True:
+    start_x, start_y = random.randint(0, grid.width - 1), random.randint(0, grid.height - 1)
+    if not grid.get_tile(start_x, start_y).is_blocked:
+        start = grid.get_tile(start_x, start_y)
+        break
+
+# Define goal position
 goal = grid.get_tile(grid.width - 1, grid.height - 1)
 
 print(f"Running algorithms on {grid_filename}...\n")
+print(f"Start position: ({start_x}, {start_y})\n")
 
 # Run Repeated Forward A*
 print("Running Repeated Forward A*...")
@@ -65,4 +73,3 @@ if path_adaptive:
     print(f"Path found! Length: {len(path_adaptive)}, Time: {end_time - start_time:.4f} sec")
 else:
     print("No path found!")
-
