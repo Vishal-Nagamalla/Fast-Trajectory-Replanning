@@ -38,8 +38,7 @@ def generate_maze(grid_size, block_prob):
         else:
             stack.pop()  # Backtrack when no unvisited neighbors
 
-    # Ensure start and goal are unblocked
-    grid.get_tile(0, 0).is_blocked = False
+    # Ensure goal is unblocked
     grid.get_tile(grid_size - 1, grid_size - 1).is_blocked = False
     return grid
 
