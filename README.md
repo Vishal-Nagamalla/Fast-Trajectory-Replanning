@@ -1,6 +1,7 @@
 # Fast-Trajectory-Replanning
 - Joshua Li - jl2960
 - Vishal Nagamalla - Vn218
+- Arnav Dhammi - ad1962
 
 # Classes
 ## Tile
