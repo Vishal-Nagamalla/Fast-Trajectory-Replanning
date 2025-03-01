@@ -25,7 +25,7 @@ def load_grid(filename):
     return grid
 
 # Set up test parameters
-grid_filename = "generated_grids/grid_20.txt"  # Change file as needed
+grid_filename = "generated_grids/grid_15.txt"  # Change file as needed
 grid = load_grid(grid_filename)
 
 # DEBUG
@@ -47,37 +47,41 @@ print(f"Running algorithms on {grid_filename}, from {(start.x, start.y)} to (101
 # Run Repeated Forward A* (greater g-value priority tiebreaking)
 print("Running Repeated Forward A* (greater g-value priority tiebreaking)...")
 start_time = time.time()
-path_fwd = repeated_forward_astar(grid, start, goal)
+path_fwd, expansions = repeated_forward_astar(grid, start, goal)
 end_time = time.time()
 if path_fwd:
     print(f"Path found! Length: {len(path_fwd)}, Time: {end_time - start_time:.4f} sec")
+    print(f"Expansions: {expansions}")
 
 print("\n" + "="*50 + "\n")
 
 # Run Repeated Forward A* (lesser g-value priority tiebreaking)
 print("Running Repeated Forward A* (lesser g-value priority tiebreaking)...")
 start_time = time.time()
-path_fwd = repeated_forward_astar2(grid, start, goal)
+path_fwd, expansions = repeated_forward_astar2(grid, start, goal)
 end_time = time.time()
 if path_fwd:
     print(f"Path found! Length: {len(path_fwd)}, Time: {end_time - start_time:.4f} sec")
+    print(f"Expansions: {expansions}")
 
 print("\n" + "="*50 + "\n")
 
 # Run Repeated Backward A*
 print("Running Repeated Backward A*...")
 start_time = time.time()
-path_bwd = repeated_backward_astar(grid, start, goal)
+path_bwd, expansions = repeated_backward_astar(grid, start, goal)
 end_time = time.time()
 if path_bwd:
     print(f"Path found! Length: {len(path_bwd)}, Time: {end_time - start_time:.4f} sec")
+    print(f"Expansions: {expansions}")
 
 print("\n" + "="*50 + "\n")
 
 # Run Adaptive A*
 print("Running Adaptive A*...")
 start_time = time.time()
-path_adaptive = adaptive_a_star(grid, start, goal)
+path_adaptive, expansions = adaptive_a_star(grid, start, goal)
 end_time = time.time()
 if path_adaptive:
     print(f"Path found! Length: {len(path_adaptive)}, Time: {end_time - start_time:.4f} sec")
+    print(f"Expansions: {expansions}")
