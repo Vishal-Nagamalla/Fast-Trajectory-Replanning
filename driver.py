@@ -25,7 +25,7 @@ def load_grid(filename):
     return grid
 
 # Set up test parameters
-grid_filename = "generated_grids/grid_5.txt"  # Change file as needed
+grid_filename = "generated_grids/grid_20.txt"  # Change file as needed
 grid = load_grid(grid_filename)
 
 # DEBUG
@@ -42,7 +42,7 @@ grid.printGrid()
 start = grid.get_tile(random.randint(0, grid.width-1), random.randint(0, grid.height-1))
 goal = grid.get_tile(grid.width - 1, grid.height - 1)
 
-print(f"Running algorithms on {grid_filename}...\n")
+print(f"Running algorithms on {grid_filename}, from {(start.x, start.y)} to (101, 101)...\n")
 
 # Run Repeated Forward A* (greater g-value priority tiebreaking)
 print("Running Repeated Forward A* (greater g-value priority tiebreaking)...")
