@@ -24,8 +24,7 @@ def load_grid(filename):
     return grid
 
 # Set up test parameters
-grid_filename = "generated_grids/grid_1.txt"  # Change file as needed
-# 1, 7, 12, 21, 23, 24
+grid_filename = "generated_grids/grid_24.txt"  # Change file as needed
 grid = load_grid(grid_filename)
 
 # Define random start position
