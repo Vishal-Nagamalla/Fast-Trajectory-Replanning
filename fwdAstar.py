@@ -17,12 +17,14 @@ def a_star_search(grid, start, goal):
     g_score = {start: 0}
     f_score = {start: heuristic(start, goal)}
 
+    expansions = 0
     while open_set:
+        expansions += 1
         _, _, current = heapq.heappop(open_set)  # Extract g-value as well
 
         if current == goal:
             print("Goal reached!")  # Debugging
-            return reconstruct_path(came_from, current)
+            return reconstruct_path(came_from, current), expansions
 
         for neighbor in grid.get_neighbors(current):
             if neighbor in closed_set or neighbor.is_blocked:
@@ -36,14 +38,14 @@ def a_star_search(grid, start, goal):
                 came_from[neighbor] = current
 
     print("No path found!")
-    return None  # If goal was never reached
+    return None, expansions  # If goal was never reached
 
 def repeated_forward_astar(grid, start, goal):
     """Repeated Forward A* that replans when encountering blocked cells."""
-    path = a_star_search(grid, start, goal)
+    path, expansions = a_star_search(grid, start, goal)
     
     if not path:
-        return None  # No possible path to goal
+        return None, expansions  # No possible path to goal
 
     actual_path = []
     for step in path:
@@ -52,13 +54,13 @@ def repeated_forward_astar(grid, start, goal):
             new_start = actual_path[-1]
             new_path = a_star_search(grid, new_start, goal)
             if not new_path:
-                return None  # No path exists
+                return None, expansions  # No path exists
             actual_path.extend(new_path)
             break
         else:
             actual_path.append(step)
 
-    return actual_path
+    return actual_path, expansions
 
 def reconstruct_path(came_from, current):
     path = []
