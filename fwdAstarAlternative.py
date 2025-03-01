@@ -35,7 +35,7 @@ def a_star_search(grid, start, goal):
                 heapq.heappush(open_set, (f_score[neighbor], g_score[neighbor], neighbor))  # Favor small g-values
                 came_from[neighbor] = current
 
-    print("No path found!")  # Debugging
+    print("No path found!")
     return None  # If goal was never reached
 
 def repeated_forward_astar(grid, start, goal):
