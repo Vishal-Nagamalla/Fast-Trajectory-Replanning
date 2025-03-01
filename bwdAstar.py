@@ -18,11 +18,14 @@ def a_star_search(grid, start, goal):
     f_score = {tile: float("inf") for row in grid.tiles for tile in row}
     f_score[goal] = heuristic(goal, start)
 
+    expansions = 0
+
     while open_set:
+        expansions += 1
         _, _, current = heapq.heappop(open_set)
 
         if current == start:  # If we reached the start, reconstruct path
-            return reconstruct_path(came_from, current)
+            return reconstruct_path(came_from, current), expansions
 
         for neighbor in grid.get_neighbors(current):
             tentative_g_score = g_score[current] + 1  # Uniform cost for grid moves
@@ -34,7 +37,7 @@ def a_star_search(grid, start, goal):
 
                 heapq.heappush(open_set, (f_score[neighbor], -g_score[neighbor], neighbor))
 
-    return None  # No path found
+    return None, expansions  # No path found
 
 def reconstruct_path(came_from, current):
     """Reconstructs the path from goal to start."""
@@ -47,11 +50,11 @@ def reconstruct_path(came_from, current):
 def repeated_backward_astar(grid, start, goal):
     """Repeated Backward A* Search Algorithm."""
     while True:
-        path = a_star_search(grid, goal, start)  # Swap start & goal for backward search
+        path, expansions = a_star_search(grid, goal, start)  # Swap start & goal for backward search
 
         if path is None:
             print("No path found!")
-            return None
+            return None, expansions
 
         # Follow the path until an unknown obstacle is encountered
         for step in path:
@@ -59,7 +62,7 @@ def repeated_backward_astar(grid, start, goal):
                 break
         else:
             print("Goal reached!")
-            return path  # Return path if fully traversable
+            return path, expansions  # Return path if fully traversable
 
         # If an obstacle was encountered, update the grid and restart search
         print(f"Blocked tile found at {step.x}, {step.y}. Recalculating...")
