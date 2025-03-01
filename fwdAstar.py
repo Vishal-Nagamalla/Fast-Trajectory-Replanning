@@ -18,7 +18,7 @@ def a_star_search(grid, start, goal):
     f_score = {start: heuristic(start, goal)}
 
     while open_set:
-        current_f, _, current = heapq.heappop(open_set)  # Extract g-value as well
+        _, _, current = heapq.heappop(open_set)  # Extract g-value as well
 
         if current == goal:
             print("Goal reached!")  # Debugging
