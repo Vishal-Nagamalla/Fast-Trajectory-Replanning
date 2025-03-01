@@ -9,7 +9,7 @@ def heuristic(a, b):
 def a_star_search(grid, start, goal, h_values):
     """A* search using adaptive heuristic updates."""
     open_set = []
-    heapq.heappush(open_set, (0, start))
+    heapq.heappush(open_set, (h_values[start], -0, start))
     came_from = {}
 
     g_score = {tile: float("inf") for row in grid.tiles for tile in row}
@@ -19,7 +19,7 @@ def a_star_search(grid, start, goal, h_values):
     f_score[start] = h_values[start]  # Use updated heuristic
 
     while open_set:
-        _, current = heapq.heappop(open_set)
+        _, _, current = heapq.heappop(open_set)
 
         if current == goal:
             return reconstruct_path(came_from, current), g_score
@@ -32,7 +32,7 @@ def a_star_search(grid, start, goal, h_values):
                 g_score[neighbor] = tentative_g_score
                 f_score[neighbor] = tentative_g_score + h_values[neighbor]
 
-                heapq.heappush(open_set, (f_score[neighbor], neighbor))
+                heapq.heappush(open_set, (f_score[neighbor], -g_score[neighbor], neighbor))
 
     return None, g_score  # No path found
 
