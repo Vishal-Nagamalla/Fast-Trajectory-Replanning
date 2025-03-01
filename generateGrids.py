@@ -38,7 +38,7 @@ def generate_maze(grid_size, block_prob):
         else:
             stack.pop()  # Backtrack when no unvisited neighbors
 
-    # Ensure goal is unblocked
+    # Ensure start and goal are unblocked
     grid.get_tile(grid_size - 1, grid_size - 1).is_blocked = False
     return grid
 
@@ -64,11 +64,6 @@ def load_grid(filename):
     
     return grid
 
-def print_grid(grid):
-    """Print the gridworld as ASCII output."""
-    for row in grid.tiles:
-        print("".join("█" if tile.is_blocked else "." for tile in row))  # Blocked = █, Unblocked = .
-
 # Generate and save 50 gridworlds
 output_dir = "generated_grids"
 os.makedirs(output_dir, exist_ok=True)
@@ -81,6 +76,3 @@ print(f"Successfully generated and saved {NUM_GRIDS} gridworlds in '{output_dir}
 
 # Load and print a sample grid
 sample_grid = load_grid(os.path.join(output_dir, "grid_1.txt"))
-print("\nSample Gridworld (ASCII View):")
-print_grid(sample_grid)
-
