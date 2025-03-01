@@ -64,11 +64,6 @@ def load_grid(filename):
     
     return grid
 
-def print_grid(grid):
-    """Print the gridworld as ASCII output."""
-    for row in grid.tiles:
-        print("".join("1" if tile.is_blocked else "0" for tile in row))  # Blocked = 1, Unblocked =0.
-
 # Generate and save 50 gridworlds
 output_dir = "generated_grids"
 os.makedirs(output_dir, exist_ok=True)
