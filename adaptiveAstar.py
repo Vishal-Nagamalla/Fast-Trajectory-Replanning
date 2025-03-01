@@ -56,9 +56,8 @@ def adaptive_a_star(grid, start, goal):
             return None
 
         # Update heuristic values based on the actual cost
-        for tile, score in g_score.items():
-            if score < float("inf"):
-                h_values[tile] = g_score[goal] - score
+        for tile in path:
+            h_values[tile] = g_score[goal] - g_score[tile]
 
         # Follow the path until an unknown obstacle is encountered
         for step in path:
