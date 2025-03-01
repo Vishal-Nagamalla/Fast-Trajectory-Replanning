@@ -11,16 +11,14 @@ def heuristic(a, b):
 def a_star_search(grid, start, goal):
     open_set = []
     closed_set = set()
-    heapq.heappush(open_set, (heuristic(start, goal), -0, start))
+    heapq.heappush(open_set, (heuristic(start, goal), -0, start))  # g-value tie-breaker
     
     came_from = {}
     g_score = {start: 0}
     f_score = {start: heuristic(start, goal)}
 
     while open_set:
-        current_f, _, current = heapq.heappop(open_set)
-        
-        #print(f"Expanding: ({current.x}, {current.y}), f={current_f}")  # Debugging
+        current_f, _, current = heapq.heappop(open_set)  # Extract g-value as well
 
         if current == goal:
             print("Goal reached!")  # Debugging
@@ -37,9 +35,7 @@ def a_star_search(grid, start, goal):
                 heapq.heappush(open_set, (f_score[neighbor], -g_score[neighbor], neighbor))
                 came_from[neighbor] = current
 
-        #print(f"Open set: {[f'{tile.x},{tile.y}' for _, _, tile in open_set]}")  # Debugging
-
-    print("No path found!")  # Debugging
+    print("No path found!")
     return None  # If goal was never reached
 
 def repeated_forward_astar(grid, start, goal):
