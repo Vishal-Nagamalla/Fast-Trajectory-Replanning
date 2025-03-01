@@ -38,7 +38,7 @@ def a_star_search(grid, start, goal):
     print("No path found!")
     return None  # If goal was never reached
 
-def repeated_forward_astar(grid, start, goal):
+def repeated_forward_astar2(grid, start, goal):
     """Repeated Forward A* that replans when encountering blocked cells."""
     path = a_star_search(grid, start, goal)
     
