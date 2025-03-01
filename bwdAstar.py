@@ -9,7 +9,7 @@ def heuristic(a, b):
 def a_star_search(grid, start, goal):
     """A* search algorithm running from goal to start."""
     open_set = []
-    heapq.heappush(open_set, (0, goal))  # Start from the goal
+    heapq.heappush(open_set, (heuristic(goal, start), -0, goal))  # Start from the goal
     came_from = {}
 
     g_score = {tile: float("inf") for row in grid.tiles for tile in row}
@@ -19,7 +19,7 @@ def a_star_search(grid, start, goal):
     f_score[goal] = heuristic(goal, start)
 
     while open_set:
-        _, current = heapq.heappop(open_set)
+        _, _, current = heapq.heappop(open_set)
 
         if current == start:  # If we reached the start, reconstruct path
             return reconstruct_path(came_from, current)
@@ -32,7 +32,7 @@ def a_star_search(grid, start, goal):
                 g_score[neighbor] = tentative_g_score
                 f_score[neighbor] = tentative_g_score + heuristic(neighbor, start)
 
-                heapq.heappush(open_set, (f_score[neighbor], neighbor))
+                heapq.heappush(open_set, (f_score[neighbor], -g_score[neighbor], neighbor))
 
     return None  # No path found
 
