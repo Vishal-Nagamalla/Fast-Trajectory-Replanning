@@ -12,7 +12,7 @@ class Grid:
 
     def get_tile(self, x, y):
         """Return the tile at (x, y) if within bounds."""
-        if 0 <= x < self.width and 0 <= y < self.height:
+        if 0 <= x and x < self.width and 0 <= y and y < self.height:
             return self.tiles[x][y]
         return None
 
@@ -27,7 +27,6 @@ class Grid:
         
         If the given tile is blocked, return an empty list.
         """
-        # 🔥 Fix: Ensure `tile` is a Tile object
         if isinstance(tile, tuple):  
             tile = self.get_tile(tile[0], tile[1])  # Convert (x, y) -> Tile object
 
@@ -50,3 +49,8 @@ class Grid:
         for row in self.tiles:
             for tile in row:
                 tile.reset()
+
+    def printGrid(self):
+        """Prints the grid, with '1' denoting blocked tiles, and '0' denoting open tiles."""
+        for row in self.tiles:
+            print("".join("1" if tile.is_blocked else "0" for tile in row))
