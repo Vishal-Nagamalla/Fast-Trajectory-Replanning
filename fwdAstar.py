@@ -10,31 +10,34 @@ def heuristic(a, b):
 
 def a_star_search(grid, start, goal):
     open_set = []
-    heapq.heappush(open_set, (0, start))
+    closed_set = set()
+    heapq.heappush(open_set, (heuristic(start, goal), -0, start))
     
     came_from = {}
     g_score = {start: 0}
     f_score = {start: heuristic(start, goal)}
 
     while open_set:
-        current_f, current = heapq.heappop(open_set)
+        current_f, _, current = heapq.heappop(open_set)
         
-        print(f"Expanding: ({current.x}, {current.y}), f={current_f}")  # Debugging
+        #print(f"Expanding: ({current.x}, {current.y}), f={current_f}")  # Debugging
 
         if current == goal:
             print("Goal reached!")  # Debugging
             return reconstruct_path(came_from, current)
 
         for neighbor in grid.get_neighbors(current):
+            if neighbor in closed_set or neighbor.is_blocked:
+                continue
             tentative_g_score = g_score[current] + 1  # Assuming uniform cost
             
             if neighbor not in g_score or tentative_g_score < g_score[neighbor]:
                 g_score[neighbor] = tentative_g_score
                 f_score[neighbor] = tentative_g_score + heuristic(neighbor, goal)
-                heapq.heappush(open_set, (f_score[neighbor], neighbor))
+                heapq.heappush(open_set, (f_score[neighbor], -g_score[neighbor], neighbor))
                 came_from[neighbor] = current
 
-        print(f"Open set: {[f'{tile.x},{tile.y}' for _, tile in open_set]}")  # Debugging
+        #print(f"Open set: {[f'{tile.x},{tile.y}' for _, _, tile in open_set]}")  # Debugging
 
     print("No path found!")  # Debugging
     return None  # If goal was never reached
