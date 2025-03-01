@@ -27,6 +27,9 @@ def load_grid(filename):
 grid_filename = "generated_grids/grid_24.txt"  # Change file as needed
 grid = load_grid(grid_filename)
 
+# Print grid
+grid.printGrid()
+
 # Define random start position
 while True:
     start_x, start_y = random.randint(0, grid.width - 1), random.randint(0, grid.height - 1)
