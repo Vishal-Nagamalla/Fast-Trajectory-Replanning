@@ -18,11 +18,13 @@ def a_star_search(grid, start, goal, h_values):
     f_score = {tile: float("inf") for row in grid.tiles for tile in row}
     f_score[start] = h_values[start]  # Use updated heuristic
 
+    expansions = 0
     while open_set:
+        expansions += 1
         _, _, current = heapq.heappop(open_set)
 
         if current == goal:
-            return reconstruct_path(came_from, current), g_score
+            return reconstruct_path(came_from, current), g_score, expansions
 
         for neighbor in grid.get_neighbors(current):
             tentative_g_score = g_score[current] + 1  # Uniform cost for grid moves
@@ -34,7 +36,7 @@ def a_star_search(grid, start, goal, h_values):
 
                 heapq.heappush(open_set, (f_score[neighbor], -g_score[neighbor], neighbor))
 
-    return None, g_score  # No path found
+    return None, g_score, expansions  # No path found
 
 def reconstruct_path(came_from, current):
     """Reconstructs the path from goal to start."""
@@ -49,15 +51,16 @@ def adaptive_a_star(grid, start, goal):
     h_values = {tile: heuristic(tile, goal) for row in grid.tiles for tile in row}  # Initial heuristic
 
     while True:
-        path, g_score = a_star_search(grid, start, goal, h_values)
+        path, g_score, expansions = a_star_search(grid, start, goal, h_values)
 
         if path is None:
             print("No path found!")
-            return None
+            return None, expansions
 
         # Update heuristic values based on the actual cost
-        for tile in path:
-            h_values[tile] = g_score[goal] - g_score[tile]
+        for tile, score in g_score.items():
+            if score < float("inf"):  # If node was reached during search
+                h_values[tile] = g_score[goal] - score
 
         # Follow the path until an unknown obstacle is encountered
         for step in path:
@@ -65,7 +68,7 @@ def adaptive_a_star(grid, start, goal):
                 break
         else:
             print("Goal reached!")
-            return path  # Return path if fully traversable
+            return path, expansions  # Return path if fully traversable
 
         # If an obstacle was encountered, update the grid and restart search
         print(f"Blocked tile found at {step.x}, {step.y}. Recalculating...")
